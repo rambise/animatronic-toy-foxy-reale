@@ -45,7 +45,10 @@ def _load_key() -> str:
             f"Manca il file '{config.BRAIN_KEY_FILE}' con la chiave segreta del "
             "robot nella radice del progetto. Vedi il README."
         )
-    return open(config.BRAIN_KEY_FILE, encoding="utf-8").read().strip()
+    # utf-8-sig invece di utf-8: ignora il BOM che Windows (es. PowerShell
+    # "Out-File -Encoding utf8", o Notepad) spesso aggiunge all'inizio del
+    # file - altrimenti finisce dentro la chiave e rompe l'header HTTP.
+    return open(config.BRAIN_KEY_FILE, encoding="utf-8-sig").read().strip()
 
 
 def play_audio(opus_b64: str | None):
