@@ -11,3 +11,14 @@ soundfile>=0.12
 python_speech_features>=0.6
 scikit-learn>=1.3
 joblib>=1.3
+
+# IA conversazionale
+anthropic>=0.40
+
+# Speech-to-text offline
+vosk>=0.3.45
+# Serve anche scaricare un modello italiano, vedi README (non e' su pip)
+
+# Text-to-speech offline (Piper)
+# Il binario "piper" NON si installa con pip: vedi README per i link
+# alle release precompilate (incluse quelle per Raspberry Pi/ARM).
