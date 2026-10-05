@@ -49,7 +49,7 @@ BRAIN_KEY_FILE = "robot_key.txt"
 # Il tuo chat_id numerico di Telegram, per condividere la memoria con la
 # chat del bot "Toy Foxy". Scrivi a @userinfobot su Telegram per saperlo.
 # Lascia None per una memoria separata, solo per il robot.
-BRAIN_CHAT_ID = None
+BRAIN_CHAT_ID = 8938326772
 BRAIN_REQUEST_TIMEOUT_S = 120
 
 # Quanto aspetta che inizi a parlare prima di considerare il turno "silenzioso"
