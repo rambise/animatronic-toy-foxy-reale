@@ -1,0 +1,7 @@
+# Dati personali: foto/voci di famiglia e modelli addestrati non vanno nel repository
+face_dataset/
+voice_dataset/
+models/
+
+__pycache__/
+*.pyc
