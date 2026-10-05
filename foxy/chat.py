@@ -1,25 +1,10 @@
 import os
-import re
 
 import anthropic
 
 from foxy import config
+from foxy.emotion import split_response
 from foxy.personality import SYSTEM_PROMPT
-
-_EMOTION_TAG_RE = re.compile(r"\[EMOZIONE:\s*(\w+)\s*\]", re.IGNORECASE)
-VALID_EMOTIONS = {"felice", "triste", "sorpreso", "curioso", "affettuoso", "neutro"}
-
-
-def _split_response(raw_text: str):
-    """Separa il testo da dire ad alta voce dal tag [EMOZIONE:...]."""
-    match = _EMOTION_TAG_RE.search(raw_text)
-    emotion = "neutro"
-    if match:
-        candidate = match.group(1).lower()
-        if candidate in VALID_EMOTIONS:
-            emotion = candidate
-        raw_text = raw_text[: match.start()]
-    return raw_text.strip(), emotion
 
 
 class ChatEngine:
@@ -70,7 +55,7 @@ class ChatEngine:
         )
 
         raw_text = next((b.text for b in response.content if b.type == "text"), "")
-        spoken_text, emotion = _split_response(raw_text)
+        spoken_text, emotion = split_response(raw_text)
 
         self._remember("assistant", raw_text)
 

@@ -84,18 +84,119 @@ luce/angolazione: se sbaglia spesso, registra più foto in condizioni di
 luce diverse. Il riconoscimento vocale con MFCC+SVM funziona bene per
 poche persone (famiglia), non è pensato per scalare a decine di voci.
 
-## Prossimi passi (roadmap)
+## IA conversazionale (chat + voce)
+
+Foxy parla con te usando l'API Claude, con una personalità calda e
+affettuosa (vedi `foxy/personality.py`), speech-to-text offline (Vosk) e
+text-to-speech offline (Piper) — l'unica parte che richiede internet è
+la chiamata all'IA per generare la risposta.
+
+### Setup
+
+1. **Chiave API Claude**: crea una chiave su
+   [console.anthropic.com](https://console.anthropic.com/) e impostala
+   sul Raspberry Pi:
+   ```bash
+   echo 'export ANTHROPIC_API_KEY=sk-ant-...' >> ~/.bashrc
+   source ~/.bashrc
+   ```
+2. **Vosk** (speech-to-text): scarica un modello italiano da
+   [alphacephei.com/vosk/models](https://alphacephei.com/vosk/models)
+   (consigliato `vosk-model-small-it-0.22`, leggero) ed estrailo in
+   `models/stt/vosk-model-it`.
+3. **Piper** (text-to-speech): scarica il binario precompilato per la
+   tua architettura (incluso ARM/Raspberry Pi) e una voce italiana da
+   [github.com/rhasspy/piper](https://github.com/rhasspy/piper), metti
+   il binario nel PATH e il modello voce in
+   `models/tts/it_IT-voice.onnx`.
+
+### Avvio
+
+```bash
+python -m foxy.conversation
+```
+
+Quando il sensore di presenza rileva qualcuno, Foxy ascolta (non serve
+premere nulla, capisce da solo quando inizi/finisci di parlare), prova a
+riconoscere chi sei (volto/voce, se li hai registrati), risponde con
+l'IA, parla con Piper e fa un piccolo gesto con la testa in base
+all'emozione della risposta.
+
+**Limite onesto sul "volersi bene":** il calore/affetto di Foxy è una
+personalità scritta nel prompt (`foxy/personality.py`), non coscienza o
+emozioni reali — lo stesso principio di un Tamagotchi o un Furby. È un
+compagno con cui interagire, non un essere senziente.
+
+## Locomozione autonoma
+
+Foxy si muove da solo su ruote o cingoli nascosti sotto il corpo
+(**non** cammina su gambe vere: per un bipede che cammina in autonomia
+servirebbe un progetto di robotica molto più avanzato — equilibrio,
+motori ad alta coppia, feedback continuo). Evita gli ostacoli con 3
+sensori ultrasonici e ha un sensore anti-caduta per non cadere dalle
+scale.
+
+### Collegamenti aggiuntivi (BCM)
+
+| Componente | Pin |
+|---|---|
+| Motore sinistro (avanti/indietro) | GPIO20 / GPIO21 |
+| Motore destro (avanti/indietro) | GPIO16 / GPIO12 |
+| Ultrasonico sinistra TRIG/ECHO | GPIO5 / GPIO6 |
+| Ultrasonico destra TRIG/ECHO | GPIO13 / GPIO19 |
+| Sensore anti-caduta (IR verso il pavimento) | GPIO26 |
+
+Il sensore ultrasonico centrale di navigazione riusa i pin del sensore
+di presenza (GPIO23/24) — presuppone che sia montato in basso e rivolto
+in avanti. Se hai un sensore dedicato, cambia `NAV_CENTER_*_PIN` in
+`foxy/config.py`.
+
+### Avvio
+
+```bash
+python -m foxy.autonomous_drive
+```
+
+**Prima di lasciarlo libero per casa:**
+1. Testalo con le ruote sollevate da terra per controllare che "avanti"
+   vada davvero avanti (altrimenti inverti i fili di un motore).
+2. Testa il sensore anti-caduta tenendo Foxy sul bordo di un tavolo:
+   deve fermarsi e girare, non "cadere".
+3. La prima volta, resta vicino e pronto a staccare l'alimentazione.
+
+## Companion videogiochi (sperimentale)
+
+```bash
+python -m foxy.game_companion
+```
+
+Punta una telecamera verso lo schermo: Foxy guarda e commenta a voce
+ogni tanto quello che vede, usando la vision dell'IA.
+
+**Limite onesto:** questo NON fa "giocare" Foxy con te — è un compagno
+che guarda e commenta, non preme pulsanti e non conosce lo stato interno
+del gioco. Automatizzare davvero l'input richiederebbe hardware
+aggiuntivo (es. un microcontrollore come gamepad USB) ed è realistico
+solo per giochi molto semplici.
+
+## Roadmap
 
 Il progetto è ambizioso (corpo completo, locomozione autonoma, IA
-affettiva, interazione con videogiochi): lo costruiamo a fasi.
+affettiva, interazione con videogiochi): lo stiamo costruendo a fasi.
 
-1. ~~Testa/volto espressivo di base~~ (servo testa, impostato)
-2. **Riconoscimento volto + voce** (questa fase)
-3. Personalità IA conversazionale (chat calda/empatica, conoscenza sui
-   videogiochi)
-4. Locomozione autonoma su ruote/cingoli nascosti + evitamento ostacoli
-5. Fase sperimentale: interazione con videogiochi (commento via
-   videocamera sullo schermo, o input automatico per giochi semplici)
+1. ~~Testa/volto espressivo di base~~ (servo testa)
+2. ~~Riconoscimento volto + voce~~
+3. ~~Personalità IA conversazionale (chat calda/empatica + voce)~~
+4. ~~Locomozione autonoma su ruote/cingoli nascosti + evitamento ostacoli~~
+5. ~~Companion sperimentale per videogiochi~~ (commento, non "gioca")
+
+Prossimi possibili step, da valutare in base a cosa funziona meglio dal
+vivo:
+- Più servo per espressioni facciali vere (mascella, palpebre, orecchie)
+  invece del solo movimento della testa
+- Braccia/mani con più gradi di libertà
+- Navigazione con mappa (SLAM) se l'evitamento reattivo non basta in
+  casa tua
 
 ## Collegare il robot a Claude
 
