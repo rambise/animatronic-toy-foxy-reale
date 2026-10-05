@@ -118,13 +118,13 @@ python -m foxy.conversation
 
 Quando il sensore di presenza rileva qualcuno, Foxy:
 
-1. prova a riconoscerti dal volto e **ti saluta lui per primo**, di sua
+1. prova a riconoscerti dal volto e **ti saluta lei per prima**, di sua
    iniziativa, se sei qualcuno che conosce (non aspetta che tu parli)
 2. ascolta (non serve premere nulla, capisce da solo quando
-   inizi/finisci di parlare) e risponde con l'IA quando gli parli
-3. se resti vicino senza parlargli per un po' (`CHAT_IDLE_COMMENT_AFTER_S`,
+   inizi/finisci di parlare) e risponde con l'IA quando le parli
+3. se resti vicino senza parlarle per un po' (`CHAT_IDLE_COMMENT_AFTER_S`,
    default 25s), **dice qualcosa di sua iniziativa** invece di startene
-   zitto — un'osservazione, una domanda, una battuta
+   zitta — un'osservazione, una domanda, una battuta
 
 In ogni risposta parla con Piper e fa un piccolo gesto con la testa in
 base all'emozione della risposta.
@@ -164,7 +164,7 @@ in avanti. Se hai un sensore dedicato, cambia `NAV_CENTER_*_PIN` in
 python -m foxy.autonomous_drive
 ```
 
-**Prima di lasciarlo libero per casa:**
+**Prima di lasciarla libera per casa:**
 1. Testalo con le ruote sollevate da terra per controllare che "avanti"
    vada davvero avanti (altrimenti inverti i fili di un motore).
 2. Testa il sensore anti-caduta tenendo Foxy sul bordo di un tavolo:
@@ -180,7 +180,7 @@ python -m foxy.game_companion
 Punta una telecamera verso lo schermo: Foxy guarda e commenta a voce
 ogni tanto quello che vede, usando la vision dell'IA.
 
-**Limite onesto:** questo NON fa "giocare" Foxy con te — è un compagno
+**Limite onesto:** questo NON fa "giocare" Foxy con te — è una compagna
 che guarda e commenta, non preme pulsanti e non conosce lo stato interno
 del gioco. Automatizzare davvero l'input richiederebbe hardware
 aggiuntivo (es. un microcontrollore come gamepad USB) ed è realistico

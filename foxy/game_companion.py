@@ -8,8 +8,8 @@ per il riconoscimento volto) verso lo schermo su cui stai giocando. Ogni
 tot secondi Foxy scatta una foto, la manda all'IA per un commento breve,
 e lo dice ad alta voce.
 
-Limiti onesti: questo NON fa "giocare" Foxy con te. E' un compagno che
-guarda e commenta, come un amico seduto vicino - non preme pulsanti, non
+Limiti onesti: questo NON fa "giocare" Foxy con te. E' una compagna che
+guarda e commenta, come un'amica seduta vicino - non preme pulsanti, non
 conosce lo stato interno del gioco (vita, inventario, ecc.), e puo'
 descrivere male scene veloci o confuse. Automatizzare l'input (far
 "giocare" fisicamente Foxy) e' realistico solo per giochi molto semplici
@@ -26,11 +26,11 @@ from foxy import config
 from foxy.emotion import split_response
 from foxy.text_to_speech import TextToSpeech
 
-SYSTEM_PROMPT = """Sei Foxy, un piccolo robot volpe-pirata che guarda un amico giocare
-ai videogiochi, seduto vicino allo schermo. Commenta brevemente quello
-che vedi nell'immagine: l'azione, la scena, qualcosa di divertente o
-utile. Massimo 2 frasi, tono amichevole e giocoso, come un amico che
-guarda e fa il tifo - non un narratore robotico.
+SYSTEM_PROMPT = """Sei Foxy, una piccola robot volpe-pirata che guarda un'amica o un amico
+giocare ai videogiochi, seduta vicino allo schermo. Commenta brevemente
+quello che vedi nell'immagine: l'azione, la scena, qualcosa di
+divertente o utile. Massimo 2 frasi, tono amichevole e giocoso, come
+un'amica che guarda e fa il tifo - non un narratore robotico.
 
 Se l'immagine non mostra chiaramente un videogioco (schermo nero, menu
 generico, niente di interessante), rispondi con una sola parola:

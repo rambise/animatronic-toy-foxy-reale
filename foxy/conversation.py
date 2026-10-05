@@ -4,10 +4,10 @@ Uso:
     python -m foxy.conversation
 
 Quando qualcuno si avvicina (sensore di presenza), Foxy:
-1. prova a riconoscerlo dal volto e lo saluta per primo, di sua
-   iniziativa, se e' qualcuno che conosce
-2. ascolta e risponde quando gli parli
-3. se resta li' vicino senza parlargli per un po', dice qualcosa di sua
+1. prova a riconoscere chi e' dal volto e lo saluta lei per prima, di
+   sua iniziativa, se e' qualcuno che conosce
+2. ascolta e risponde quando le parli
+3. se resta li' vicino senza parlarle per un po', dice qualcosa di sua
    iniziativa invece di stare in silenzio
 
 In ogni risposta, parla con Piper e fa un piccolo gesto con la testa in
@@ -98,11 +98,11 @@ def run():
                 )
                 if speaker_name and speaker_name != "sconosciuto" and speaker_name != greeted_name:
                     greeted_name = speaker_name
-                    print(f"Foxy riconosce {speaker_name}: lo saluta per primo.")
+                    print(f"Foxy riconosce {speaker_name}: lo saluta lei per prima.")
                     greeting_prompt = (
-                        f"[Si e' appena avvicinato {speaker_name}. Salutalo tu per primo, "
+                        f"[Si e' appena avvicinato/a {speaker_name}. Salutalo/a tu per prima, "
                         "spontaneamente, con una battuta o una domanda breve - non aspettare "
-                        "che parli lui/lei.]"
+                        "che parli per primo/a.]"
                     )
                     _speak(chat, tts, head, greeting_prompt, speaker_name)
                     last_interaction = time.time()
@@ -122,7 +122,7 @@ def run():
                 print("Silenzio prolungato: Foxy dice qualcosa di sua iniziativa.")
                 idle_prompt = (
                     "[E' da un po' che la persona e' li' vicino ma nessuno ti parla. Di' "
-                    "qualcosa di tua iniziativa, breve e spontaneo: un'osservazione, una "
+                    "qualcosa di tua iniziativa, breve e spontanea: un'osservazione, una "
                     "domanda, una battuta sui videogiochi, quello che ti viene.]"
                 )
                 _speak(chat, tts, head, idle_prompt, None)
