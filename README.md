@@ -116,11 +116,18 @@ la chiamata all'IA per generare la risposta.
 python -m foxy.conversation
 ```
 
-Quando il sensore di presenza rileva qualcuno, Foxy ascolta (non serve
-premere nulla, capisce da solo quando inizi/finisci di parlare), prova a
-riconoscere chi sei (volto/voce, se li hai registrati), risponde con
-l'IA, parla con Piper e fa un piccolo gesto con la testa in base
-all'emozione della risposta.
+Quando il sensore di presenza rileva qualcuno, Foxy:
+
+1. prova a riconoscerti dal volto e **ti saluta lui per primo**, di sua
+   iniziativa, se sei qualcuno che conosce (non aspetta che tu parli)
+2. ascolta (non serve premere nulla, capisce da solo quando
+   inizi/finisci di parlare) e risponde con l'IA quando gli parli
+3. se resti vicino senza parlargli per un po' (`CHAT_IDLE_COMMENT_AFTER_S`,
+   default 25s), **dice qualcosa di sua iniziativa** invece di startene
+   zitto — un'osservazione, una domanda, una battuta
+
+In ogni risposta parla con Piper e fa un piccolo gesto con la testa in
+base all'emozione della risposta.
 
 **Limite onesto sul "volersi bene":** il calore/affetto di Foxy è una
 personalità scritta nel prompt (`foxy/personality.py`), non coscienza o

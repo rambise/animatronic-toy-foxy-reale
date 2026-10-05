@@ -43,6 +43,13 @@ CLAUDE_MODEL = "claude-sonnet-5-5"
 CHAT_MAX_HISTORY_TURNS = 12  # quante battute di conversazione ricordare
 CHAT_MAX_RESPONSE_TOKENS = 300  # risposte brevi: Foxy parla, non scrive saggi
 
+# Quanto aspetta che inizi a parlare prima di considerare il turno "silenzioso"
+# (e passare a controllare se e' il caso di dire qualcosa di sua iniziativa)
+CHAT_LISTEN_TIMEOUT_S = 8.0
+# Se nessuno gli parla da cosi' tanto tempo (ma e' ancora rilevata una
+# presenza), Foxy dice qualcosa di sua iniziativa invece di restare muto
+CHAT_IDLE_COMMENT_AFTER_S = 25.0
+
 # --- Speech-to-text offline (Vosk) ---
 # Scarica un modello italiano da https://alphacephei.com/vosk/models
 # (consigliato: vosk-model-small-it-0.22, leggero per Raspberry Pi)

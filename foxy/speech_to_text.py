@@ -26,12 +26,16 @@ class SpeechToText:
     def __init__(self):
         self._model = Model(config.VOSK_MODEL_PATH)
 
-    def listen_and_transcribe(self):
+    def listen_and_transcribe(self, max_wait_for_speech_s: float | None = None):
         """Blocca finche' non sente una frase, poi la trascrive.
 
         Attende in silenzio finche' il volume non supera la soglia
         (inizio parlato), registra finche' non c'e' abbastanza silenzio
         consecutivo (fine parlato), con un taglio di sicurezza massimo.
+
+        Se max_wait_for_speech_s e' impostato e nessuno inizia a parlare
+        entro quel tempo, ritorna ("", array vuoto) invece di bloccare
+        per sempre - utile per alternare ascolto e commenti spontanei.
 
         Ritorna (testo_trascritto, audio_float32) - l'audio grezzo serve
         a VoiceIdentifier per riconoscere chi ha parlato.
@@ -54,6 +58,7 @@ class SpeechToText:
             speech_started = False
             silence_start = None
             recording_start = None
+            wait_start = time.time()
 
             while True:
                 chunk = audio_queue.get()
@@ -66,6 +71,11 @@ class SpeechToText:
                         recording_start = now
                         recognizer.AcceptWaveform(chunk.tobytes())
                         recorded_chunks.append(chunk)
+                    elif (
+                        max_wait_for_speech_s is not None
+                        and (now - wait_start) > max_wait_for_speech_s
+                    ):
+                        return "", np.array([], dtype=np.float32)
                     continue
 
                 recognizer.AcceptWaveform(chunk.tobytes())
