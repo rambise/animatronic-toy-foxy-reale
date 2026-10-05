@@ -18,6 +18,7 @@ CONFIGURAZIONE (sul Raspberry Pi):
 """
 import base64
 import os
+import platform
 import subprocess
 import tempfile
 
@@ -65,7 +66,13 @@ def play_audio(opus_b64: str | None):
             check=False,
         )
     except FileNotFoundError:
-        print("ffplay non trovato: installa ffmpeg (sudo apt install ffmpeg)")
+        if platform.system() == "Windows":
+            print(
+                "ffplay non trovato: installa ffmpeg con 'winget install ffmpeg', "
+                "poi chiudi e riapri il terminale."
+            )
+        else:
+            print("ffplay non trovato: installa ffmpeg (sudo apt install ffmpeg)")
     finally:
         try:
             os.unlink(path)
