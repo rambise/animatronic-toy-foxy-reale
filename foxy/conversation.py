@@ -10,14 +10,19 @@ Quando qualcuno si avvicina (sensore di presenza), Foxy:
 3. se resta li' vicino senza parlarle per un po', dice qualcosa di sua
    iniziativa invece di stare in silenzio
 
-In ogni risposta, parla con Piper e fa un piccolo gesto con la testa in
-base all'emozione della risposta.
+Le risposte arrivano dal cervello remoto condiviso col bot Telegram
+"Toy Foxy" (foxy/brain_client.py): stessa personalita', stessi mood,
+e la stessa memoria se hai configurato BRAIN_CHAT_ID. Il server genera
+gia' l'audio della risposta - non serve Piper per questa modalita'.
+
+In ogni risposta, Foxy fa anche un piccolo gesto con la testa in base
+all'emozione (mood) della risposta.
 
 Richiede che tu abbia gia':
 - addestrato il riconoscimento facciale (foxy.train_face) - opzionale
 - addestrato il riconoscimento vocale (foxy.train_voice) - opzionale
-- ANTHROPIC_API_KEY impostata nell'ambiente
-- Vosk e Piper installati e configurati (vedi README)
+- un file robot_key.txt nella radice del progetto con la chiave del robot
+- Vosk e ffmpeg installati e configurati (vedi README)
 """
 import time
 
@@ -25,11 +30,10 @@ import cv2
 
 from foxy import config
 from foxy.actuators import HeadServo
-from foxy.chat import ChatEngine
+from foxy.brain_client import BrainClient, play_audio
 from foxy.face_id import FaceIdentifier
 from foxy.sensors import PresenceSensor
 from foxy.speech_to_text import SpeechToText
-from foxy.text_to_speech import TextToSpeech
 from foxy.voice_id import VoiceIdentifier
 
 
@@ -55,23 +59,24 @@ def _identify_speaker(face_identifier, voice_identifier, audio):
     return speaker_name
 
 
-def _speak(chat, tts, head, prompt, speaker_name):
-    spoken_text, emotion = chat.reply(prompt, speaker_name)
+def _speak(brain, head, prompt, speaker_name):
+    spoken_text, emotion, audio_b64 = brain.reply(prompt, speaker_name)
+    if not spoken_text and not audio_b64:
+        return
     print(f"Foxy: {spoken_text} [{emotion}]")
-    tts.say(spoken_text, emotion)
+    play_audio(audio_b64)
     head.express_emotion(emotion)
 
 
 def run():
     presence = PresenceSensor()
     head = HeadServo()
-    chat = ChatEngine()
+    brain = BrainClient()
     stt = SpeechToText()
-    tts = TextToSpeech()
     face_identifier = FaceIdentifier()
     voice_identifier = VoiceIdentifier()
 
-    print("Foxy e' pronto a chiacchierare. In ascolto sul sensore di presenza...")
+    print("Foxy e' pronta a chiacchierare. In ascolto sul sensore di presenza...")
 
     was_near = False
     greeted_name = None
@@ -83,8 +88,7 @@ def run():
 
             if not near:
                 if was_near:
-                    # la persona se n'e' andata: si riparte da zero al prossimo arrivo
-                    chat.reset()
+                    # la persona se n'e' andata: al prossimo arrivo la saluta di nuovo
                     greeted_name = None
                 was_near = False
                 time.sleep(0.2)
@@ -104,7 +108,7 @@ def run():
                         "spontaneamente, con una battuta o una domanda breve - non aspettare "
                         "che parli per primo/a.]"
                     )
-                    _speak(chat, tts, head, greeting_prompt, speaker_name)
+                    _speak(brain, head, greeting_prompt, speaker_name)
                     last_interaction = time.time()
 
             text, audio = stt.listen_and_transcribe(
@@ -114,7 +118,7 @@ def run():
             if text:
                 speaker_name = _identify_speaker(face_identifier, voice_identifier, audio)
                 print(f"[{speaker_name or 'sconosciuto'}] {text}")
-                _speak(chat, tts, head, text, speaker_name)
+                _speak(brain, head, text, speaker_name)
                 last_interaction = time.time()
                 continue
 
@@ -125,7 +129,7 @@ def run():
                     "qualcosa di tua iniziativa, breve e spontanea: un'osservazione, una "
                     "domanda, una battuta sui videogiochi, quello che ti viene.]"
                 )
-                _speak(chat, tts, head, idle_prompt, None)
+                _speak(brain, head, idle_prompt, None)
                 last_interaction = time.time()
     except KeyboardInterrupt:
         print("Arresto di Foxy...")

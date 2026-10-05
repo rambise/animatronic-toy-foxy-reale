@@ -3,5 +3,8 @@ face_dataset/
 voice_dataset/
 models/
 
+# Chiave segreta del robot (cervello Lovable/Telegram) - mai su git
+robot_key.txt
+
 __pycache__/
 *.pyc

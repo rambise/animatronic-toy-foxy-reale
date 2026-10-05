@@ -12,13 +12,21 @@ python_speech_features>=0.6
 scikit-learn>=1.3
 joblib>=1.3
 
-# IA conversazionale
+# Cervello remoto (Lovable/Telegram) - usato di default da foxy/conversation.py
+requests>=2.31
+# Riproduce l'audio di risposta (opus) con ffplay: installa ffmpeg a parte
+# (NON su pip): sudo apt install ffmpeg
+
+# IA conversazionale locale (API Claude) - usata da foxy/game_companion.py
+# e da foxy/chat.py (quest'ultimo non usato di default, vedi config.py)
 anthropic>=0.40
 
 # Speech-to-text offline
 vosk>=0.3.45
 # Serve anche scaricare un modello italiano, vedi README (non e' su pip)
 
-# Text-to-speech offline (Piper)
+# Text-to-speech offline (Piper) - non usata di default da foxy/conversation.py
+# (che usa l'audio gia' sintetizzato dal cervello remoto), tenuta per chi
+# vuole foxy/chat.py come IA locale indipendente da Lovable/Telegram.
 # Il binario "piper" NON si installa con pip: vedi README per i link
 # alle release precompilate (incluse quelle per Raspberry Pi/ARM).

@@ -35,13 +35,22 @@ VOICE_MODEL_PATH = "models/voice_model.pkl"
 # Qui invece piu' alta = piu' sicura (e' una probabilita' 0-1).
 VOICE_CONFIDENCE_THRESHOLD = 0.6
 
-# --- IA conversazionale (API Claude) ---
-# La chiave va messa nella variabile d'ambiente ANTHROPIC_API_KEY, MAI scritta
-# qui nel codice. Su Raspberry Pi: aggiungi "export ANTHROPIC_API_KEY=sk-ant-..."
-# al tuo ~/.bashrc, oppure creane uno nuovo su https://console.anthropic.com/
-CLAUDE_MODEL = "claude-sonnet-5-5"
-CHAT_MAX_HISTORY_TURNS = 12  # quante battute di conversazione ricordare
-CHAT_MAX_RESPONSE_TOKENS = 300  # risposte brevi: Foxy parla, non scrive saggi
+# --- Cervello remoto (Lovable, condiviso col bot Telegram "Toy Foxy") ---
+# E' il cervello di default usato da foxy/conversation.py: stessa
+# personalita', stessi mood, e se BRAIN_CHAT_ID e' impostato anche la
+# stessa memoria della chat Telegram. Il server fa sia il ragionamento
+# (LLM) sia la sintesi vocale - l'audio arriva gia' pronto, non serve
+# Piper per questa modalita'.
+BRAIN_URL = "https://bot-guardians-ever.lovable.app/api/public/robot/toy-foxy"
+# Chiave segreta del robot: NON va mai scritta qui. Va messa in un file
+# robot_key.txt nella radice del progetto (una riga, senza spazi) -
+# escluso da git tramite .gitignore. Vedi il README per come ottenerla.
+BRAIN_KEY_FILE = "robot_key.txt"
+# Il tuo chat_id numerico di Telegram, per condividere la memoria con la
+# chat del bot "Toy Foxy". Scrivi a @userinfobot su Telegram per saperlo.
+# Lascia None per una memoria separata, solo per il robot.
+BRAIN_CHAT_ID = None
+BRAIN_REQUEST_TIMEOUT_S = 120
 
 # Quanto aspetta che inizi a parlare prima di considerare il turno "silenzioso"
 # (e passare a controllare se e' il caso di dire qualcosa di sua iniziativa)
@@ -49,6 +58,16 @@ CHAT_LISTEN_TIMEOUT_S = 8.0
 # Se nessuno gli parla da cosi' tanto tempo (ma e' ancora rilevata una
 # presenza), Foxy dice qualcosa di sua iniziativa invece di restare muto
 CHAT_IDLE_COMMENT_AFTER_S = 25.0
+
+# --- IA conversazionale locale (API Claude) ---
+# Non usata di default da foxy/conversation.py (che usa il cervello
+# remoto sopra) - tenuta per chi preferisce un'IA locale indipendente da
+# Lovable/Telegram, vedi foxy/chat.py. La chiave va messa nella variabile
+# d'ambiente ANTHROPIC_API_KEY, MAI scritta qui nel codice. Usata anche
+# da foxy/game_companion.py per i commenti sui videogiochi.
+CLAUDE_MODEL = "claude-sonnet-5-5"
+CHAT_MAX_HISTORY_TURNS = 12  # quante battute di conversazione ricordare
+CHAT_MAX_RESPONSE_TOKENS = 300  # risposte brevi: Foxy parla, non scrive saggi
 
 # --- Speech-to-text offline (Vosk) ---
 # Scarica un modello italiano da https://alphacephei.com/vosk/models

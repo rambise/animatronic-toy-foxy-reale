@@ -86,29 +86,49 @@ poche persone (famiglia), non è pensato per scalare a decine di voci.
 
 ## IA conversazionale (chat + voce)
 
-Foxy parla con te usando l'API Claude, con una personalità calda e
-affettuosa (vedi `foxy/personality.py`), speech-to-text offline (Vosk) e
-text-to-speech offline (Piper) — l'unica parte che richiede internet è
-la chiamata all'IA per generare la risposta.
+Foxy parla con lo **stesso cervello del bot Telegram "Toy Foxy"**,
+ospitato su Lovable (`foxy/brain_client.py`): stessa personalità, stessi
+mood, e — se configuri `BRAIN_CHAT_ID` — la stessa memoria della chat
+Telegram. Il server fa sia il ragionamento (LLM) sia la sintesi vocale:
+la risposta arriva già con l'audio pronto, non serve una voce sintetica
+locale per questa modalità.
+
+In locale resta solo lo speech-to-text (Vosk, per capire cosa dici) e il
+riconoscimento volto/voce (per sapere chi sei). La parte "cervello" vive
+su internet: se il Raspberry Pi non è connesso, Foxy non può rispondere.
 
 ### Setup
 
-1. **Chiave API Claude**: crea una chiave su
-   [console.anthropic.com](https://console.anthropic.com/) e impostala
-   sul Raspberry Pi:
+1. **Chiave del robot**: ottienila dal pannello della tua app Lovable
+   (quella con cui hai creato il bot Telegram), poi sul Raspberry Pi:
    ```bash
-   echo 'export ANTHROPIC_API_KEY=sk-ant-...' >> ~/.bashrc
-   source ~/.bashrc
+   echo 'LA_TUA_CHIAVE_QUI' > robot_key.txt
    ```
-2. **Vosk** (speech-to-text): scarica un modello italiano da
+   nella radice del progetto. Questo file **non va mai condiviso o
+   messo su git** (è già nel `.gitignore`): chi lo ha può far parlare
+   Foxy a tuo nome.
+2. **ffmpeg** (per riprodurre l'audio delle risposte):
+   ```bash
+   sudo apt update && sudo apt install -y ffmpeg
+   ```
+3. **Vosk** (speech-to-text): scarica un modello italiano da
    [alphacephei.com/vosk/models](https://alphacephei.com/vosk/models)
    (consigliato `vosk-model-small-it-0.22`, leggero) ed estrailo in
    `models/stt/vosk-model-it`.
-3. **Piper** (text-to-speech): scarica il binario precompilato per la
-   tua architettura (incluso ARM/Raspberry Pi) e una voce italiana da
-   [github.com/rhasspy/piper](https://github.com/rhasspy/piper), metti
-   il binario nel PATH e il modello voce in
-   `models/tts/it_IT-voice.onnx`.
+4. **(Opzionale) Memoria condivisa con Telegram**: scrivi a
+   [@userinfobot](https://t.me/userinfobot) su Telegram per avere il tuo
+   `chat_id` numerico, poi mettilo in `BRAIN_CHAT_ID` in
+   `foxy/config.py`. Senza, Foxy ha comunque la stessa personalità ma
+   una memoria separata, solo per il robot.
+
+### Prova rapida (senza sensori)
+
+```bash
+python -m foxy.demo_brain
+```
+
+Scrivi un messaggio da tastiera e senti la risposta vera di Foxy — utile
+per testare chiave e connessione prima di collegare microfono e sensori.
 
 ### Avvio
 
@@ -121,18 +141,31 @@ Quando il sensore di presenza rileva qualcuno, Foxy:
 1. prova a riconoscerti dal volto e **ti saluta lei per prima**, di sua
    iniziativa, se sei qualcuno che conosce (non aspetta che tu parli)
 2. ascolta (non serve premere nulla, capisce da solo quando
-   inizi/finisci di parlare) e risponde con l'IA quando le parli
+   inizi/finisci di parlare) e risponde quando le parli
 3. se resti vicino senza parlarle per un po' (`CHAT_IDLE_COMMENT_AFTER_S`,
    default 25s), **dice qualcosa di sua iniziativa** invece di startene
    zitta — un'osservazione, una domanda, una battuta
 
-In ogni risposta parla con Piper e fa un piccolo gesto con la testa in
-base all'emozione della risposta.
+In ogni risposta fa anche un piccolo gesto con la testa in base
+all'emozione (mood) della risposta.
 
 **Limite onesto sul "volersi bene":** il calore/affetto di Foxy è una
-personalità scritta nel prompt (`foxy/personality.py`), non coscienza o
-emozioni reali — lo stesso principio di un Tamagotchi o un Furby. È un
-compagno con cui interagire, non un essere senziente.
+personalità scritta nel cervello Lovable, non coscienza o emozioni
+reali — lo stesso principio di un Tamagotchi o un Furby. È una compagna
+con cui interagire, non un essere senziente.
+
+### IA locale alternativa (senza Lovable/Telegram)
+
+Se preferisci un'IA indipendente da Lovable — niente memoria condivisa
+con Telegram, ma funziona anche se decidi di non usare più quel servizio
+— il progetto include anche un percorso tutto-locale basato sull'API
+Claude diretta (`foxy/chat.py`) e Piper per la voce
+(`foxy/text_to_speech.py`), non collegato di default a
+`foxy/conversation.py`. Per usarlo al posto del cervello Lovable, nel
+loop sostituisci `BrainClient` con `ChatEngine` + `TextToSpeech` (le
+interfacce sono quasi identiche: entrambe hanno un metodo `reply`).
+Richiede una chiave `ANTHROPIC_API_KEY` e Piper installato — vedi i
+commenti in `foxy/config.py`.
 
 ## Locomozione autonoma
 
