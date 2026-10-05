@@ -99,27 +99,56 @@ su internet: se il Raspberry Pi non è connesso, Foxy non può rispondere.
 
 ### Setup
 
-1. **Chiave del robot**: ottienila dal pannello della tua app Lovable
-   (quella con cui hai creato il bot Telegram), poi sul Raspberry Pi:
+1. **Endpoint del robot su Lovable**: se il tuo progetto Lovable non ha
+   ancora un endpoint pubblico per il robot, apri la chat del progetto
+   su [lovable.dev](https://lovable.dev) e chiedi di crearlo — vedi il
+   prompt pronto più sotto. **Dopo** averlo creato, chiedi esplicitamente
+   di **pubblicarlo**: se resta solo "in anteprima" l'indirizzo pubblico
+   risponde 404 anche se tutto sembra a posto.
+2. **Chiave del robot**: Lovable te la mostra una volta sola, al momento
+   in cui la crea/salva — copiala subito, perché dopo nemmeno Lovable
+   può più mostrartela. Sul Raspberry Pi (o sul PC dove stai testando),
+   nella cartella del progetto:
    ```bash
    echo 'LA_TUA_CHIAVE_QUI' > robot_key.txt
    ```
-   nella radice del progetto. Questo file **non va mai condiviso o
-   messo su git** (è già nel `.gitignore`): chi lo ha può far parlare
-   Foxy a tuo nome.
-2. **ffmpeg** (per riprodurre l'audio delle risposte):
+   Questo file **non va mai condiviso o messo su git** (è già nel
+   `.gitignore`): chi lo ha può far parlare Foxy a tuo nome.
+3. **ffmpeg** (per riprodurre l'audio delle risposte) — su Raspberry Pi:
    ```bash
    sudo apt update && sudo apt install -y ffmpeg
    ```
-3. **Vosk** (speech-to-text): scarica un modello italiano da
+   su Windows (solo per testare dal PC prima di avere il Pi):
+   ```powershell
+   winget install ffmpeg
+   ```
+   (poi chiudi e riapri il terminale prima di continuare)
+4. **Vosk** (speech-to-text): scarica un modello italiano da
    [alphacephei.com/vosk/models](https://alphacephei.com/vosk/models)
    (consigliato `vosk-model-small-it-0.22`, leggero) ed estrailo in
    `models/stt/vosk-model-it`.
-4. **(Opzionale) Memoria condivisa con Telegram**: scrivi a
+5. **(Opzionale) Memoria condivisa con Telegram**: scrivi a
    [@userinfobot](https://t.me/userinfobot) su Telegram per avere il tuo
    `chat_id` numerico, poi mettilo in `BRAIN_CHAT_ID` in
    `foxy/config.py`. Senza, Foxy ha comunque la stessa personalità ma
    una memoria separata, solo per il robot.
+
+Prompt pronto da incollare nella chat di Lovable se l'endpoint non
+esiste ancora:
+
+> Voglio aggiungere un endpoint pubblico per far parlare il mio robot
+> fisico con lo stesso cervello del bot Telegram "Toy Foxy" (stessa
+> personalità, stessa memoria, stessi mood). Crea un endpoint POST
+> `/api/public/robot/toy-foxy` che: 1) richiede un header `X-Robot-Key`
+> controllato contro un secret, rispondendo 401 se manca o è sbagliato;
+> 2) accetta nel body JSON `{ "text": "...", "chat_id": ... }` (chat_id
+> opzionale); 3) se c'è chat_id usa la memoria di quella chat Telegram,
+> altrimenti una memoria separata; 4) passa il testo allo stesso motore
+> di risposta del bot Telegram; 5) genera anche l'audio della risposta
+> (opus) e lo include in `audio_base64`; 6) risponde con JSON
+> `{ "text": "...", "mood": "...", "form": "toy" o "mangle",
+> "audio_base64": "..." }`. Crea il secret con un valore sicuro e
+> mostramelo. Poi pubblica la versione.
 
 ### Prova rapida (senza sensori)
 
@@ -129,6 +158,17 @@ python -m foxy.demo_brain
 
 Scrivi un messaggio da tastiera e senti la risposta vera di Foxy — utile
 per testare chiave e connessione prima di collegare microfono e sensori.
+Funziona anche da un PC Windows normale, non serve il Raspberry Pi per
+questo test (utile per verificare tutto prima di montare l'hardware).
+
+**Problemi comuni durante il test:**
+- `SSLCertVerificationError` / `self-signed certificate` → un
+  antivirus (es. Kaspersky) sta ispezionando il traffico HTTPS.
+  Disattiva temporaneamente "Scansione delle connessioni crittografate"
+  nelle sue impostazioni di rete.
+- `Errore 404 dal cervello` → l'endpoint esiste ma è ancora "in
+  anteprima" su Lovable: chiedi di pubblicarlo (vedi punto 1 sopra).
+- `ffplay non trovato` → manca ffmpeg, vedi punto 3 sopra.
 
 ### Avvio
 
