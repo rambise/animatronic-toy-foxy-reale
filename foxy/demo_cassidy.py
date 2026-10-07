@@ -1,7 +1,7 @@
 """Demo da terminale del cervello remoto (Lovable + Telegram).
 
 Uso:
-    python -m foxy.demo_brain
+    python -m foxy.demo_cassidy
 
 Scrivi un messaggio e ottieni la risposta vera del cervello di Cassidy,
 con tanto di audio. Utile per testare la connessione (chiave, chat_id)

@@ -153,7 +153,7 @@ esiste ancora:
 ### Prova rapida (senza sensori)
 
 ```bash
-python -m foxy.demo_brain
+python -m foxy.demo_cassidy
 ```
 
 Scrivi un messaggio da tastiera e senti la risposta vera di Cassidy — utile
