@@ -1,6 +1,6 @@
-# Foxy Animatronic
+# Cassidy Animatronic
 
-Progetto per animatronic Foxy su Raspberry Pi: sensore ultrasonico HC-SR04
+Progetto per animatronic Cassidy su Raspberry Pi: sensore ultrasonico HC-SR04
 per rilevare la presenza, un servo per muovere testa/occhi e riproduzione
 audio alla rilevazione.
 
@@ -26,7 +26,7 @@ pip install -r requirements.txt
 ```
 
 Metti i file audio (`.wav`, `.ogg` o `.mp3`) che vuoi far riprodurre a
-Foxy nella cartella `sounds/`.
+Cassidy nella cartella `sounds/`.
 
 ## Avvio
 
@@ -38,7 +38,7 @@ python -m foxy.main
 
 Il loop principale legge continuamente la distanza dal sensore
 ultrasonico. Quando qualcuno si avvicina sotto la soglia configurata
-(`PRESENCE_THRESHOLD_M`, default 0.5 m), Foxy:
+(`PRESENCE_THRESHOLD_M`, default 0.5 m), Cassidy:
 
 1. riproduce un suono a caso dalla cartella `sounds/`
 2. muove la testa con un'animazione fissa (destra-centro-sinistra)
@@ -86,7 +86,7 @@ poche persone (famiglia), non è pensato per scalare a decine di voci.
 
 ## IA conversazionale (chat + voce)
 
-Foxy parla con lo **stesso cervello del bot Telegram "Toy Foxy"**,
+Cassidy parla con lo **stesso cervello del bot Telegram "Toy Foxy"**,
 ospitato su Lovable (`foxy/brain_client.py`): stessa personalità, stessi
 mood, e — se configuri `BRAIN_CHAT_ID` — la stessa memoria della chat
 Telegram. Il server fa sia il ragionamento (LLM) sia la sintesi vocale:
@@ -95,7 +95,7 @@ locale per questa modalità.
 
 In locale resta solo lo speech-to-text (Vosk, per capire cosa dici) e il
 riconoscimento volto/voce (per sapere chi sei). La parte "cervello" vive
-su internet: se il Raspberry Pi non è connesso, Foxy non può rispondere.
+su internet: se il Raspberry Pi non è connesso, Cassidy non può rispondere.
 
 ### Setup
 
@@ -113,7 +113,7 @@ su internet: se il Raspberry Pi non è connesso, Foxy non può rispondere.
    echo 'LA_TUA_CHIAVE_QUI' > robot_key.txt
    ```
    Questo file **non va mai condiviso o messo su git** (è già nel
-   `.gitignore`): chi lo ha può far parlare Foxy a tuo nome.
+   `.gitignore`): chi lo ha può far parlare Cassidy a tuo nome.
 3. **ffmpeg** (per riprodurre l'audio delle risposte) — su Raspberry Pi:
    ```bash
    sudo apt update && sudo apt install -y ffmpeg
@@ -130,7 +130,7 @@ su internet: se il Raspberry Pi non è connesso, Foxy non può rispondere.
 5. **(Opzionale) Memoria condivisa con Telegram**: scrivi a
    [@userinfobot](https://t.me/userinfobot) su Telegram per avere il tuo
    `chat_id` numerico, poi mettilo in `BRAIN_CHAT_ID` in
-   `foxy/config.py`. Senza, Foxy ha comunque la stessa personalità ma
+   `foxy/config.py`. Senza, Cassidy ha comunque la stessa personalità ma
    una memoria separata, solo per il robot.
 
 Prompt pronto da incollare nella chat di Lovable se l'endpoint non
@@ -156,7 +156,7 @@ esiste ancora:
 python -m foxy.demo_brain
 ```
 
-Scrivi un messaggio da tastiera e senti la risposta vera di Foxy — utile
+Scrivi un messaggio da tastiera e senti la risposta vera di Cassidy — utile
 per testare chiave e connessione prima di collegare microfono e sensori.
 Funziona anche da un PC Windows normale, non serve il Raspberry Pi per
 questo test (utile per verificare tutto prima di montare l'hardware).
@@ -176,7 +176,7 @@ questo test (utile per verificare tutto prima di montare l'hardware).
 python -m foxy.conversation
 ```
 
-Quando il sensore di presenza rileva qualcuno, Foxy:
+Quando il sensore di presenza rileva qualcuno, Cassidy:
 
 1. prova a riconoscerti dal volto e **ti saluta lei per prima**, di sua
    iniziativa, se sei qualcuno che conosce (non aspetta che tu parli)
@@ -189,7 +189,7 @@ Quando il sensore di presenza rileva qualcuno, Foxy:
 In ogni risposta fa anche un piccolo gesto con la testa in base
 all'emozione (mood) della risposta.
 
-**Limite onesto sul "volersi bene":** il calore/affetto di Foxy è una
+**Limite onesto sul "volersi bene":** il calore/affetto di Cassidy è una
 personalità scritta nel cervello Lovable, non coscienza o emozioni
 reali — lo stesso principio di un Tamagotchi o un Furby. È una compagna
 con cui interagire, non un essere senziente.
@@ -209,7 +209,7 @@ commenti in `foxy/config.py`.
 
 ## Locomozione autonoma
 
-Foxy si muove da solo su ruote o cingoli nascosti sotto il corpo
+Cassidy si muove da solo su ruote o cingoli nascosti sotto il corpo
 (**non** cammina su gambe vere: per un bipede che cammina in autonomia
 servirebbe un progetto di robotica molto più avanzato — equilibrio,
 motori ad alta coppia, feedback continuo). Evita gli ostacoli con 3
@@ -240,7 +240,7 @@ python -m foxy.autonomous_drive
 **Prima di lasciarla libera per casa:**
 1. Testalo con le ruote sollevate da terra per controllare che "avanti"
    vada davvero avanti (altrimenti inverti i fili di un motore).
-2. Testa il sensore anti-caduta tenendo Foxy sul bordo di un tavolo:
+2. Testa il sensore anti-caduta tenendo Cassidy sul bordo di un tavolo:
    deve fermarsi e girare, non "cadere".
 3. La prima volta, resta vicino e pronto a staccare l'alimentazione.
 
@@ -250,10 +250,10 @@ python -m foxy.autonomous_drive
 python -m foxy.game_companion
 ```
 
-Punta una telecamera verso lo schermo: Foxy guarda e commenta a voce
+Punta una telecamera verso lo schermo: Cassidy guarda e commenta a voce
 ogni tanto quello che vede, usando la vision dell'IA.
 
-**Limite onesto:** questo NON fa "giocare" Foxy con te — è una compagna
+**Limite onesto:** questo NON fa "giocare" Cassidy con te — è una compagna
 che guarda e commenta, non preme pulsanti e non conosce lo stato interno
 del gioco. Automatizzare davvero l'input richiederebbe hardware
 aggiuntivo (es. un microcontrollore come gamepad USB) ed è realistico

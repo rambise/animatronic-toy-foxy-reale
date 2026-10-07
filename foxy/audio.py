@@ -7,7 +7,7 @@ from foxy import config
 
 
 class SoundPlayer:
-    """Riproduce un suono a caso dalla cartella dei suoni di Foxy."""
+    """Riproduce un suono a caso dalla cartella dei suoni di Cassidy."""
 
     def __init__(self):
         pygame.mixer.init()

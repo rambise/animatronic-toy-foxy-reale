@@ -6,7 +6,7 @@ from foxy import config
 
 
 class HeadServo:
-    """Wrapper sul servo che muove testa/occhi di Foxy."""
+    """Wrapper sul servo che muove testa/occhi di Cassidy."""
 
     CENTER_ANGLE = 0
     LOOK_ANGLE = 45

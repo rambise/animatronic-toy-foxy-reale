@@ -16,7 +16,7 @@ PRESENCE_THRESHOLD_M = 0.5
 SOUNDS_DIR = "sounds"
 
 # Intervallo minimo tra due attivazioni consecutive, in secondi
-# (evita che Foxy "scatti" in continuazione se qualcuno resta fermo davanti)
+# (evita che Cassidy "scatti" in continuazione se qualcuno resta fermo davanti)
 COOLDOWN_SECONDS = 4.0
 
 # --- Riconoscimento facciale ---
@@ -56,7 +56,7 @@ BRAIN_REQUEST_TIMEOUT_S = 120
 # (e passare a controllare se e' il caso di dire qualcosa di sua iniziativa)
 CHAT_LISTEN_TIMEOUT_S = 8.0
 # Se nessuno gli parla da cosi' tanto tempo (ma e' ancora rilevata una
-# presenza), Foxy dice qualcosa di sua iniziativa invece di restare muto
+# presenza), Cassidy dice qualcosa di sua iniziativa invece di restare muto
 CHAT_IDLE_COMMENT_AFTER_S = 25.0
 
 # --- IA conversazionale locale (API Claude) ---
@@ -67,14 +67,14 @@ CHAT_IDLE_COMMENT_AFTER_S = 25.0
 # da foxy/game_companion.py per i commenti sui videogiochi.
 CLAUDE_MODEL = "claude-sonnet-5-5"
 CHAT_MAX_HISTORY_TURNS = 12  # quante battute di conversazione ricordare
-CHAT_MAX_RESPONSE_TOKENS = 300  # risposte brevi: Foxy parla, non scrive saggi
+CHAT_MAX_RESPONSE_TOKENS = 300  # risposte brevi: Cassidy parla, non scrive saggi
 
 # --- Speech-to-text offline (Vosk) ---
 # Scarica un modello italiano da https://alphacephei.com/vosk/models
 # (consigliato: vosk-model-small-it-0.22, leggero per Raspberry Pi)
 VOSK_MODEL_PATH = "models/stt/vosk-model-it"
 VAD_SILENCE_RMS_THRESHOLD = 500  # sotto questa soglia il microfono e' considerato "silenzio"
-VAD_SILENCE_DURATION_S = 1.2  # silenzio continuo che fa capire a Foxy che hai finito di parlare
+VAD_SILENCE_DURATION_S = 1.2  # silenzio continuo che fa capire a Cassidy che hai finito di parlare
 VAD_MAX_RECORDING_S = 12  # taglio di sicurezza se parli troppo a lungo
 
 # --- Text-to-speech offline (Piper) ---

@@ -18,7 +18,7 @@ _EMOTION_LENGTH_SCALE = {
 
 
 class TextToSpeech:
-    """Da' voce a Foxy con Piper (sintesi vocale offline, leggera su Pi)."""
+    """Da' voce a Cassidy con Piper (sintesi vocale offline, leggera su Pi)."""
 
     def __init__(self):
         if not pygame.mixer.get_init():

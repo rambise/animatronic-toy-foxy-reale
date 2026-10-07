@@ -13,7 +13,7 @@ def run():
 
     last_trigger_time = 0.0
 
-    print("Foxy pronto. In ascolto sul sensore ultrasonico...")
+    print("Cassidy pronto. In ascolto sul sensore ultrasonico...")
     try:
         while True:
             distance = sensor.distance_m()
@@ -29,7 +29,7 @@ def run():
 
             time.sleep(0.1)
     except KeyboardInterrupt:
-        print("Arresto di Foxy...")
+        print("Arresto di Cassidy...")
     finally:
         sensor.close()
         servo.close()

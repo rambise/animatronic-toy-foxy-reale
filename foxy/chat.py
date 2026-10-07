@@ -8,7 +8,7 @@ from foxy.personality import SYSTEM_PROMPT
 
 
 class ChatEngine:
-    """Gestisce la conversazione di Foxy tramite l'API Claude.
+    """Gestisce la conversazione di Cassidy tramite l'API Claude.
 
     Richiede la variabile d'ambiente ANTHROPIC_API_KEY impostata sul
     Raspberry Pi (mai scritta nel codice).
@@ -33,10 +33,10 @@ class ChatEngine:
             self._history = self._history[-max_messages:]
 
     def reply(self, user_message: str, speaker_name: str | None = None) -> tuple[str, str]:
-        """Invia un messaggio a Foxy e ritorna (testo_da_dire, emozione).
+        """Invia un messaggio a Cassidy e ritorna (testo_da_dire, emozione).
 
         Se speaker_name e' noto (dal riconoscimento volto/voce), viene
-        aggiunto al messaggio cosi' Foxy sa chi sta parlando.
+        aggiunto al messaggio cosi' Cassidy sa chi sta parlando.
         """
         prefixed_message = user_message
         if speaker_name and speaker_name != "sconosciuto":

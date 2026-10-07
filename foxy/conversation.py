@@ -1,9 +1,9 @@
-"""Loop di conversazione completo di Foxy.
+"""Loop di conversazione completo di Cassidy.
 
 Uso:
     python -m foxy.conversation
 
-Quando qualcuno si avvicina (sensore di presenza), Foxy:
+Quando qualcuno si avvicina (sensore di presenza), Cassidy:
 1. prova a riconoscere chi e' dal volto e lo saluta lei per prima, di
    sua iniziativa, se e' qualcuno che conosce
 2. ascolta e risponde quando le parli
@@ -15,7 +15,7 @@ Le risposte arrivano dal cervello remoto condiviso col bot Telegram
 e la stessa memoria se hai configurato BRAIN_CHAT_ID. Il server genera
 gia' l'audio della risposta - non serve Piper per questa modalita'.
 
-In ogni risposta, Foxy fa anche un piccolo gesto con la testa in base
+In ogni risposta, Cassidy fa anche un piccolo gesto con la testa in base
 all'emozione (mood) della risposta.
 
 Richiede che tu abbia gia':
@@ -63,7 +63,7 @@ def _speak(brain, head, prompt, speaker_name):
     spoken_text, emotion, audio_b64 = brain.reply(prompt, speaker_name)
     if not spoken_text and not audio_b64:
         return
-    print(f"Foxy: {spoken_text} [{emotion}]")
+    print(f"Cassidy: {spoken_text} [{emotion}]")
     play_audio(audio_b64)
     head.express_emotion(emotion)
 
@@ -76,7 +76,7 @@ def run():
     face_identifier = FaceIdentifier()
     voice_identifier = VoiceIdentifier()
 
-    print("Foxy e' pronta a chiacchierare. In ascolto sul sensore di presenza...")
+    print("Cassidy e' pronta a chiacchierare. In ascolto sul sensore di presenza...")
 
     was_near = False
     greeted_name = None
@@ -102,7 +102,7 @@ def run():
                 )
                 if speaker_name and speaker_name != "sconosciuto" and speaker_name != greeted_name:
                     greeted_name = speaker_name
-                    print(f"Foxy riconosce {speaker_name}: lo saluta lei per prima.")
+                    print(f"Cassidy riconosce {speaker_name}: lo saluta lei per prima.")
                     greeting_prompt = (
                         f"[Si e' appena avvicinato/a {speaker_name}. Salutalo/a tu per prima, "
                         "spontaneamente, con una battuta o una domanda breve - non aspettare "
@@ -123,7 +123,7 @@ def run():
                 continue
 
             if (time.time() - last_interaction) > config.CHAT_IDLE_COMMENT_AFTER_S:
-                print("Silenzio prolungato: Foxy dice qualcosa di sua iniziativa.")
+                print("Silenzio prolungato: Cassidy dice qualcosa di sua iniziativa.")
                 idle_prompt = (
                     "[E' da un po' che la persona e' li' vicino ma nessuno ti parla. Di' "
                     "qualcosa di tua iniziativa, breve e spontanea: un'osservazione, una "
@@ -132,7 +132,7 @@ def run():
                 _speak(brain, head, idle_prompt, None)
                 last_interaction = time.time()
     except KeyboardInterrupt:
-        print("Arresto di Foxy...")
+        print("Arresto di Cassidy...")
     finally:
         presence.close()
         head.close()

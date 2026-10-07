@@ -1,4 +1,4 @@
-"""Client per il cervello di Foxy ospitato su Lovable, condiviso col bot
+"""Client per il cervello di Cassidy ospitato su Lovable, condiviso col bot
 Telegram "Toy Foxy".
 
 Stessa personalita', stessi mood, stessa memoria (se configuri
@@ -81,7 +81,7 @@ def play_audio(opus_b64: str | None):
 
 
 class BrainClient:
-    """Parla con Foxy tramite il cervello Lovable/Telegram invece dell'API
+    """Parla con Cassidy tramite il cervello Lovable/Telegram invece dell'API
     Claude diretta (foxy/chat.py)."""
 
     def __init__(self):
@@ -92,7 +92,7 @@ class BrainClient:
 
         Ritorna (testo_da_dire, emozione, audio_opus_base64). Non
         riproduce l'audio da solo: usa play_audio() separatamente, cosi'
-        chi chiama puo' stampare/loggare prima di far parlare Foxy.
+        chi chiama puo' stampare/loggare prima di far parlare Cassidy.
         """
         prefixed_message = user_message
         if speaker_name and speaker_name != "sconosciuto":

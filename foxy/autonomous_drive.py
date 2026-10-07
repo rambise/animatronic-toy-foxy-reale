@@ -1,4 +1,4 @@
-"""Locomozione autonoma: Foxy gira per casa evitando ostacoli.
+"""Locomozione autonoma: Cassidy gira per casa evitando ostacoli.
 
 Uso:
     python -m foxy.autonomous_drive
@@ -9,7 +9,7 @@ siano corrette, prima di farlo camminare davvero sul pavimento. Se
 "avanti" lo fa andare indietro, inverti i fili di quel motore oppure
 scambia i pin FORWARD/BACKWARD in config.py.
 
-Testa anche il sensore anti-caduta da solo prima di lasciare Foxy libero
+Testa anche il sensore anti-caduta da solo prima di lasciare Cassidy libero
 vicino alle scale: tienilo sollevato sul bordo di un tavolo e controlla
 che si fermi e giri invece di "cadere".
 """
@@ -21,13 +21,13 @@ from foxy.navigation import Navigator
 
 def run():
     navigator = Navigator()
-    print("Foxy si muove in autonomia. CTRL+C per fermarlo.")
+    print("Cassidy si muove in autonomia. CTRL+C per fermarlo.")
     try:
         while True:
             navigator.step()
             time.sleep(config.NAV_LOOP_INTERVAL_S)
     except KeyboardInterrupt:
-        print("Arresto di Foxy.")
+        print("Arresto di Cassidy.")
     finally:
         navigator.close()
 
